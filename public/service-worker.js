@@ -4,11 +4,11 @@ const FILES_TO_CACHE = [
   "/",
   "/index.html",
   "/manifest.webmanifest",
-  "/assets/css/style.css",
-  "/public/icons/icon-192x192.png",
-  "/assets/images/icons/icon-512x512.png",
-  "/public/index.js",
-  "/public/indexdb.js"
+  "/style.css",
+  "/icons/icon-192x192.png",
+  "/icons/icon-512x512.png",
+  "/index.js",
+  "/indexdb.js"
 
 ];
 
@@ -52,7 +52,7 @@ self.addEventListener("fetch", function(evt) {
       caches.open(DATA_CACHE_NAME).then(cache => {
         return fetch(evt.request)
           .then(response => {
-            // If the response was good, clone it and store it in the cache.
+           
             if (response.status === 200) {
               cache.put(evt.request.url, response.clone());
             }
@@ -60,7 +60,7 @@ self.addEventListener("fetch", function(evt) {
             return response;
           })
           .catch(err => {
-            // Network request failed, try to get it from the cache.
+          
             return cache.match(evt.request);
           });
       }).catch(err => console.log(err))
@@ -69,8 +69,7 @@ self.addEventListener("fetch", function(evt) {
     return;
   }
 
-  // if the request is not for the API, serve static assets using "offline-first" approach.
-  // see https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook#cache-falling-back-to-network
+
   evt.respondWith(
     caches.match(evt.request).then(function(response) {
       return response || fetch(evt.request);
